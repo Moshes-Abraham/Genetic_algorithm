@@ -5,8 +5,8 @@
 #include <random>
 #include <Eigen/Eigen>
 #include <boost/timer/timer.hpp>
-#define LEN 33		// 33 bytes
-#define NUM 20		/* 20 chromosomes */
+#define LEN 33					// 33 bytes
+#define NUM 20					/* 20 chromosomes */
 #define PI 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211704
 using namespace std;
 template<typename T>
@@ -42,19 +42,21 @@ class GA
 		void setCrossOverPossibility(double op){pc = op;}
 		void setVariationPossibility(double vp){pm = vp;}
 		void setBreakPoint();
+		void setToFindMinimum(bool c){choice = c;}
 
 	private:
-		int gen; 			// repeat times
-		int dimension;		// 2 by default
-		double (*objFunc)(vector<double>); 		// container for the objective function.
-		vector<string> v;		// group
-		Eigen::ArrayXd record{chromosomeLEN};	// must init with "{}" not with "()", or it will recognized record as a function! 
+		int gen; 				// repeat times
+		int dimension;				// 2 by default
+		double (*objFunc)(vector<double>); 	// container for the objective function.
+		vector<string> v;			// group
+		Eigen::ArrayXd record{0};		// must init with "{}" not with "()", or it will recognized record as a function! 
 		Eigen::ArrayXd maxrec;
 		Eigen::ArrayX2d range{dimension,2};
-		int chromosomeLEN = 33;		// by default
+		int chromosomeLEN = 33;			// by default
 		int chromosomeNUM = 20;
-		int breakPointStep; 	//= std::round(chromosomeLEN / dimension);
+		int breakPointStep;		 	//= std::round(chromosomeLEN / dimension);
 		vector<int> breakPointPos;
 		double pm = 0.01;
 		double pc = 0.25;
+		bool choice = false;			// to find the maximum by default
 };

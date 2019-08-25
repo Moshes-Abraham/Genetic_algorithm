@@ -70,7 +70,12 @@ void GA::adapt()
 			input.push_back(tmp);
 			tmp.clear();
 		}
-		record(i) = (* objFunc)(bin_x(input[i]));
+		
+		record.conservativeResize(i + 1);
+		if (!choice)
+			record(i) = (* objFunc)(bin_x(input[i]));	// find max
+		else
+			record(i) = - (* objFunc)(bin_x(input[i]));	// find min
 	}
 	
 }
@@ -179,7 +184,10 @@ void GA::opcrossover()
 		{
 			r(i) = (rd() % 100) / (double)100;
 		}
-		for (int i = 0, j = 0; i != chromosomeNUM; ++i)	// ATTENTION! chromosomeNUM should not larger than chromosomeLEN, or mk may larger than chromosomeLEN and cause "std::out_of_ranger"
+		for (int i = 0, j = 0; i != chromosomeNUM; ++i)	// ATTENTION! chromosomeNUM should 
+								// not larger than chromosomeLEN, 
+								// or mk may larger than chromosomeLEN 
+								// and cause "std::out_of_ranger"
 		{
 			if (r(i) < pc)
 			{
@@ -275,9 +283,9 @@ void GA::Solve()
 	t.start();
 	for (int i = 0; i != gen; ++i)
 	{
-		chfather();		// chose father chromosome
+		chfather();			// chose father chromosome
 
-		// genetic operator
+		/* genetic operator */
 		opcrossover();
 		variation();
 
@@ -293,14 +301,17 @@ void GA::Solve()
 	}
 	t.stop();
 
-	// outputs
+	/* outputs */
 	cout << endl << "********************************************************" << endl << endl;
 	cout << "  REPORT:          " << endl;
 	for (int i = 1; i <= dimension; ++i)
 	{
 		cout << "               X" << i << ": " << maxrec(i) << endl;
 	}
-	cout << "         F(X1,X2): " << maxrec(0) << endl;
+	if (!choice)
+		cout << "             F[X]: " << maxrec(0) << endl;
+	else
+		cout << "             F[X]: " << - maxrec(0) << endl;
 	cout << "             FROM: " << mark << "(TH) GENERATION " << endl;
 	cout << "             TIME: " << t.format(6,"%w SECONDS") << endl;
 	cout << endl << "********************************************************" << endl;
@@ -357,7 +368,7 @@ void GA::check()
 void GA::setBreakPoint()
 {
 	breakPointStep = std::round(chromosomeLEN / dimension);
-	int bpsfb = 0;		// break point step for the beginning
+	int bpsfb = 0;			// break point step for the beginning
 	for (int i = 0; i != dimension; ++i)
 	{
 		breakPointPos.push_back(bpsfb);
