@@ -1,17 +1,19 @@
 # Genetic algorithm
 This is a high efficiency realization in c++ for the genetic algorithm.
 
-# Requirements
+# Dependencies
 
-- Eigen
-- Boost
+- [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)
+- [Boost](https://www.boost.org/)
 
 # Installation
 
-```
-$ cd $(installation dir)
-$ mkdir build
-$ ../configure
-$ make
-$ make install
+```{bash}
+ cd Genetic_algorithm
+ autoreconf -i
+ mkdir build
+ cd build
+ ../configure
+ make
+ make install
 ```
